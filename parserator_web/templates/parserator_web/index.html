@@ -39,7 +39,22 @@
 
 {% block extra_js %}
   <script type="text/javascript">
-    /* TODO: Flesh this out to connect the form to the API and render results
-    in the #address-results div. */
+    // on user submit, send user input to backend for parsing
+    // on return, update webpage with parsed address 
+    $('form').submit(function(){
+      // grab user input_string
+      var input_string = $('#address').val();
+
+      // send to the backend via AJAX GET call
+      $.ajax({
+        url: '/api/parse/',
+        type: 'GET',
+        data: {'input_string': input_string},
+        success: function(resp){
+          // WIP: log the response (for now)
+          console.log(resp);
+        }
+      })
+    });
   </script>
 {% endblock %}
