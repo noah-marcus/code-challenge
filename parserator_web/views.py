@@ -22,15 +22,27 @@ class AddressParse(APIView):
         # get user's input_string from request data
         input_string = request.query_params['input_string']
 
+        # 'initalize' the response variables
+        address_components = {}
+        address_type = ""
+        status_code = 200
+
         # pass request address to parse method
-        address_components, address_type = self.parse(input_string)
+        try:
+            address_components, address_type = self.parse(input_string)
+        except:
+            # if user input could not be parsed, set http status code to 400
+            # this will act as our way of reporting an error back to the 
+            # front end without altering the expected response
+            status_code = 400
         
         # generate response JSON
         response_data = { 'input_string': input_string, \
                           'address_components': address_components, \
                           'address_type': address_type }
-        
-        return Response(response_data)
+
+        # return Response with data and status code
+        return Response(response_data, status=status_code)
 
     # return the parsed components of a given address using usaddress
     #       input: address [String]
