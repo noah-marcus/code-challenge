@@ -17,7 +17,6 @@
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
-      <!-- TODO: Display parsed address components here. -->
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
@@ -32,6 +31,12 @@
           </tbody>
         </table>
       </div>
+      <div id="parse-error" class="alert alert-danger mt-2 text-center" style="display:none" role="alert">
+        Uh-oh -- The inputted address could not be parsed!
+      </div>
+      <div id="empty-error" class="alert alert-danger mt-2 text-center" style="display:none" role="alert">
+        Please provide an address to be parsed.
+      </div>
     </div>
   </div>
 </div>
@@ -39,7 +44,66 @@
 
 {% block extra_js %}
   <script type="text/javascript">
-    /* TODO: Flesh this out to connect the form to the API and render results
-    in the #address-results div. */
+    // on user submit, send user input to backend for parsing
+    // on return, update webpage with parsed address 
+    $('form').submit(function(e){
+
+      // disable refresh on submit
+      e.preventDefault();
+
+      // clean up existing results from prior submits
+      // hide parse & empty string error in case it is 
+      //      being displayed from a prior failure
+      $('#parse-error').hide();
+      $('#empty-error').hide();
+      // remove table body and hide results
+      $('table tbody > tr').remove();
+      $('#address-results').hide();
+
+      // grab user input_string
+      var input_string = $('#address').val();
+
+      // only parse input if user inputted something
+      if (input_string != ""){
+        // send to the backend via AJAX GET call
+        $.ajax({
+          url: '/api/parse/',
+          type: 'GET',
+          data: {'input_string': input_string},
+          success: function(resp){
+        
+            // get parsed address and address type from server response
+            var address_components = resp.address_components;
+            var address_type = resp.address_type;
+            
+            // update address type display
+            $('#parse-type').text(address_type);
+
+            // update table
+            for (const [addr_part, tag] of Object.entries(address_components)) {
+                table_row = "<tr><td>" + addr_part + "</td><td>" + tag + "</td>";
+                $('table tbody').append(table_row);
+            }
+  
+            // unhide the address results div (display results to the user)
+            $('#address-results').show();
+  
+            
+            
+          },
+          error: function(request) {
+            // input string could not be parsed by the backend
+            // display the parse alert/error 
+            $('#parse-error').show();
+          }
+        });
+      }
+      // user did not input any address to be parsed
+      else {
+        // display empty string error
+        $('#empty-error').show();
+      }
+
+    });
   </script>
 {% endblock %}
