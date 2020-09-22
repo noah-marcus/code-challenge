@@ -71,8 +71,7 @@
           type: 'GET',
           data: {'input_string': input_string},
           success: function(resp){
-            
-  
+        
             // get parsed address and address type from server response
             var address_components = resp.address_components;
             var address_type = resp.address_type;
@@ -92,7 +91,7 @@
             
             
           },
-          error: function(e) {
+          error: function(request) {
             // input string could not be parsed by the backend
             // display the parse alert/error 
             $('#parse-error').show();

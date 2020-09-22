@@ -27,6 +27,6 @@ def test_api_parse_raises_error(client):
     # send address string to API endpoint
     response = client.get(url, {'input_string': address_string})
 
-    # if the backend cannot parse, it returns error code 400
-    # thus we can simply check that we recieved the error code 
+    # if the backend cannot parse, it returns error code 400 and passes on error name
     assert response.status_code == 400
+    assert response.data['detail'] == 'RepeatedLabelError'

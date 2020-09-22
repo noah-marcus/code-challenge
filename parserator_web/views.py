@@ -25,24 +25,21 @@ class AddressParse(APIView):
         # 'initalize' the response variables
         address_components = {}
         address_type = ""
-        status_code = 200
 
         # pass request address to parse method
         try:
             address_components, address_type = self.parse(input_string)
-        except:
-            # if user input could not be parsed, set http status code to 400
-            # this will act as our way of reporting an error back to the 
-            # front end without altering the expected response
-            status_code = 400
+        except Exception as e:
+  
+            raise ParseError(detail=e.__class__.__name__, code=400)
         
         # generate response JSON
         response_data = { 'input_string': input_string, \
                           'address_components': address_components, \
-                          'address_type': address_type }
+                          'address_type': address_type}
 
         # return Response with data and status code
-        return Response(response_data, status=status_code)
+        return Response(response_data)
 
     # return the parsed components of a given address using usaddress
     #       input: address [String]
