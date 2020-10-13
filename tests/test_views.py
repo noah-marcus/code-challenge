@@ -15,8 +15,7 @@ def test_api_parse_succeds(client):
     assert response.status_code == 200
     assert response.data['input_string'] == address_string
     assert response.data['address_components'] == expected_return_address_components
-    assert response.data['address_type'] == excpected_return_address_type
-    # pytest.fail()
+    assert response.data['address_type'] == expected_return_address_type
 
 
 def test_api_parse_raises_error(client):
