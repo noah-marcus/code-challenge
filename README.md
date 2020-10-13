@@ -26,6 +26,11 @@ docker-compose up
 
 The app will log to the console, and you should be able to visit it at http://localhost:8000.
 
+**Note:** You can use the following address strings:
+
+- ✅ Valid: `123 main st chicago il`
+- ❌ Invalid: `123 main st chicago il 123 main st`
+
 ## Testing
 
 You can run some tests using Docker:
