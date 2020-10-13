@@ -33,8 +33,14 @@ The app will log to the console, and you should be able to visit it at http://lo
 
 ## Testing
 
-You can run some tests using Docker:
+You can run some unit tests using Docker:
 
 ```bash
 docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
 ```
+
+There are two unit tests that make requests to the API endpoint `address-parse` and verify that it passes or fails. 
+
+The first test checks for a successful run with the test string `123 main st chicago il`. We expect a success return code of 200, and some return data (the input string, an ordered dictionary of parsed address information, and the address type).
+
+The second test uses a known invalid string (`123 main st chicago il 123 main st`) to ensure the proper error is returned. We expect a return code of 400 and the error response's detail to be 'RepeatedLabelError'.
