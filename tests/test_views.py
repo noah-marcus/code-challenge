@@ -6,7 +6,7 @@ def test_api_parse_succeds(client):
     address_string = '123 main st chicago il'
 
     expected_return_address_components = OrderedDict([('AddressNumber', '123'), ('StreetName', 'main'), ('StreetNamePostType', 'st'), ('PlaceName', 'chicago'), ('StateName', 'il')])
-    excpected_return_address_type = 'Street Address'
+    expected_return_address_type = 'Street Address'
 
     url = reverse('address-parse')
     # send address string to API endpoint
