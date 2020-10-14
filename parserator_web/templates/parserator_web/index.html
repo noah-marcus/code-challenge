@@ -89,8 +89,10 @@
           },
           // input string could not be parsed by the backend
           error: function(request) {
+            console.log(request.responseJSON);
             // fill parse error with error message from server
-            $('#parse-error').text(request.responseJSON.detail);
+            var errorResp = request.responseJSON['error'];
+            $('#parse-error').text(errorResp);
 
             // display the parse alert/error 
             $('#parse-error').show();

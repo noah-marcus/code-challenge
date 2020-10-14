@@ -36,7 +36,13 @@ class AddressParse(APIView):
         try:
             address_components, address_type = self.parse(input_string)
         except Exception as e:
-            raise ParseError(detail=e, code=400)
+            return Response({
+                'input_string': input_string, 
+                'address_components': '', 
+                'address_type': '', 
+                'error' : str(e)}, 
+	            status=400
+            )
         
         # generate response JSON
         response_data = { 'input_string': input_string, \
