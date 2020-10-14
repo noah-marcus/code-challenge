@@ -31,9 +31,7 @@
           </tbody>
         </table>
       </div>
-      <div id="parse-error" class="alert alert-danger mt-2 text-center" style="display:none" role="alert">
-        Uh-oh -- The inputted address could not be parsed!
-      </div>
+      <div id="parse-error" class="alert alert-danger mt-2 text-center" style="display:none; white-space: pre-wrap;" role="alert"> </div>
       <div id="empty-error" class="alert alert-danger mt-2 text-center" style="display:none" role="alert">
         Please provide an address to be parsed.
       </div>
@@ -88,13 +86,15 @@
             // unhide the address results div (display results to the user)
             $('#address-results').show();
   
-            
-            
           },
+          // input string could not be parsed by the backend
           error: function(request) {
-            // input string could not be parsed by the backend
+            // fill parse error with error message from server
+            $('#parse-error').text(request.responseJSON.detail);
+
             // display the parse alert/error 
             $('#parse-error').show();
+            
           }
         });
       }
